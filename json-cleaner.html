@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limpiador de JSON</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+        
+        .input-section, .output-section {
+            margin-bottom: 30px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #555;
+            font-size: 1.1em;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 200px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            resize: vertical;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+        
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .stats {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .stats h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        
+        .stats p {
+            margin: 5px 0;
+            color: #666;
+        }
+        
+        .copy-btn {
+            background: #28a745;
+            padding: 10px 20px;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .copy-btn:hover {
+            background: #218838;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧹 Limpiador de JSON</h1>
+        <p style="text-align: center; color: #666; margin-bottom: 30px;">
+            Extrae solo las opciones de respuesta de tus formularios, eliminando toda la metadata innecesaria
+        </p>
+        
+        <div class="input-section">
+            <label for="jsonInput">Pega aquí tu JSON sucio:</label>
+            <textarea id="jsonInput" placeholder="Pega aquí el contenido de tu archivo JSON..."></textarea>
+        </div>
+        
+        <div class="button-container">
+            <button onclick="limpiarJSON()">✨ Limpiar JSON</button>
+        </div>
+        
+        <div class="stats" id="stats" style="display: none;">
+            <h3>📊 Estadísticas</h3>
+            <p id="preguntasEncontradas"></p>
+            <p id="opcionesEncontradas"></p>
+            <p id="reduccionTamaño"></p>
+        </div>
+        
+        <div class="output-section">
+            <label for="jsonOutput">Resultado limpio:</label>
+            <textarea id="jsonOutput" readonly placeholder="Aquí aparecerá tu JSON limpio..."></textarea>
+            <button class="copy-btn" onclick="copiarResultado()">📋 Copiar Resultado</button>
+            <div class="success-message" id="successMessage">¡Copiado al portapapeles!</div>
+        </div>
+    </div>
+
+    <script>
+        function limpiarJSON() {
+            const input = document.getElementById('jsonInput').value;
+            const statsDiv = document.getElementById('stats');
+            
+            if (!input.trim()) {
+                alert('Por favor pega el contenido JSON primero');
+                return;
+            }
+
+            try {
+                const data = JSON.parse(input);
+                const resultado = extraerOpciones(data);
+                
+                // Mostrar resultado
+                document.getElementById('jsonOutput').value = JSON.stringify(resultado, null, 2);
+                
+                // Mostrar estadísticas
+                mostrarEstadisticas(data, resultado, input);
+                statsDiv.style.display = 'block';
+                
+            } catch (error) {
+                alert('Error al procesar el JSON: ' + error.message);
+            }
+        }
+
+        function extraerOpciones(data) {
+            const resultado = {
+                cuestionarios: []
+            };
+
+            // Buscar en descriptiveQuestions
+            if (data.data && data.data.form && data.data.form.descriptiveQuestions) {
+                data.data.form.descriptiveQuestions.forEach(pregunta => {
+                    if (pregunta.title || pregunta.formsProRTQuestionTitle) {
+                        const cuestionario = {
+                            titulo: pregunta.title || pregunta.formsProRTQuestionTitle,
+                            descripcion: pregunta.subtitle || pregunta.formsProRTSubtitle || null
+                        };
+                        
+                        resultado.cuestionarios.push(cuestionario);
+                    }
+                });
+            }
+
+            // Buscar en questions (aquí están las opciones reales)
+            if (data.data && data.data.form && data.data.form.questions) {
+                data.data.form.questions.forEach(pregunta => {
+                    if (pregunta.title || pregunta.formsProRTQuestionTitle) {
+                        const cuestionario = {
+                            titulo: pregunta.title || pregunta.formsProRTQuestionTitle,
+                            tipo: pregunta.type || 'No especificado',
+                            opciones: []
+                        };
+
+                        // Extraer opciones de respuesta
+                        if (pregunta.questionInfo) {
+                            try {
+                                const info = JSON.parse(pregunta.questionInfo);
+                                if (info.Choices && Array.isArray(info.Choices)) {
+                                    cuestionario.opciones = info.Choices.map(choice => ({
+                                        texto: choice.Description || choice.FormsProDisplayRTText || 'Sin descripción'
+                                    }));
+                                }
+                            } catch (e) {
+                                // Si no se puede parsear questionInfo, continuamos
+                            }
+                        }
+
+                        // Solo agregar si tiene contenido útil
+                        if (cuestionario.opciones.length > 0 || cuestionario.titulo) {
+                            resultado.cuestionarios.push(cuestionario);
+                        }
+                    }
+                });
+            }
+
+            return resultado;
+        }
+
+        function mostrarEstadisticas(dataOriginal, dataLimpia, textoOriginal) {
+            let totalPreguntas = 0;
+            let totalOpciones = 0;
+
+            dataLimpia.cuestionarios.forEach(cuestionario => {
+                totalPreguntas++;
+                if (cuestionario.opciones) {
+                    totalOpciones += cuestionario.opciones.length;
+                }
+            });
+
+            const tamañoOriginal = textoOriginal.length;
+            const tamañoLimpio = JSON.stringify(dataLimpia).length;
+            const reduccion = ((tamañoOriginal - tamañoLimpio) / tamañoOriginal * 100).toFixed(1);
+
+            document.getElementById('preguntasEncontradas').textContent = `Preguntas encontradas: ${totalPreguntas}`;
+            document.getElementById('opcionesEncontradas').textContent = `Total de opciones: ${totalOpciones}`;
+            document.getElementById('reduccionTamaño').textContent = `Reducción de tamaño: ${reduccion}% (de ${tamañoOriginal} a ${tamañoLimpio} caracteres)`;
+        }
+
+        function copiarResultado() {
+            const output = document.getElementById('jsonOutput');
+            output.select();
+            document.execCommand('copy');
+            
+            const message = document.getElementById('successMessage');
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 2000);
+        }
+
+        // Auto-cargar si hay contenido en la página
+        window.onload = function() {
+            // Puedes pegar aquí contenido de prueba si quieres
+        };
+    </script>
+</body>
+</html>
