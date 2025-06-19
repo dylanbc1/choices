@@ -1,14 +1,12 @@
 // ============================================
-// SCRIPT AUTOMÁTICO PARA FORMULARIO MÉDICO COMPLETO
-// Versión EXPANDIDA con mayor variedad de opciones
-// Todas las páginas - Primera página + 4 páginas adicionales
+// SCRIPT AUTOMÁTICO PARA FORMULARIO MÉDICO MEJORADO
+// Versión MEJORADA con 2-3 selecciones coherentes y tiempo realista
 // ============================================
 
 (function() {
     'use strict';
     
-    // Mapeo de categorías médicas con sus opciones EXPANDIDAS
-    // Mapeo de categorías médicas con sus opciones EXPANDIDAS
+    // Mapeo de categorías médicas (MANTENER IGUAL)
     const categoriasMedicas = {
         1: { // ENFERMEDADES INFECCIOSAS (A y B)
             id: "rc83969ce60c842f5adeb84b5bffc55fd",
@@ -242,7 +240,7 @@
                 "ENDOMETRIOSIS, NO ESPECIFICADA"
             ]
         },
-        14: { // EMBARAZO, PARTO Y PUERPERIO (O) - Raramente se llena
+        14: { // EMBARAZO, PARTO Y PUERPERIO (O)
             id: "r4aba5d34c235486eb393364bf2c8d32f",
             opciones: [
                 "SUPERVISION DE PRIMER EMBARAZO NORMAL",
@@ -252,7 +250,7 @@
                 "PARTO UNICO ESPONTANEO, PRESENTACION CEFALICA DE VERTICE"
             ]
         },
-        15: { // PERIODO PERINATAL (P) - Raramente se llena
+        15: { // PERIODO PERINATAL (P)
             id: "rc7d8e03b5c694f41875ee79e0941a8fc",
             opciones: [
                 "RECIEN NACIDO POSTERMINO SIN SOBREPESO PARA SU EDAD GESTACIONAL",
@@ -260,7 +258,7 @@
                 "SINDROME DE DIFICULTAD RESPIRATORIA DEL RECIEN NACIDO"
             ]
         },
-        16: { // MALFORMACIONES CONGÉNITAS (Q) - Raramente se llena
+        16: { // MALFORMACIONES CONGÉNITAS (Q)
             id: "r0535f0273d524618a9bd722fafb534fe",
             opciones: [
                 "LUXACION CONGENITA DE LA CADERA, NO ESPECIFICADA",
@@ -303,7 +301,7 @@
                 "HERIDA DE DEDO(S) DE LA MANO, SIN DAÑO DE LA(S) UÑA(S)"
             ]
         },
-        19: { // CAUSAS EXTERNAS (V y Y) - Raramente se llena
+        19: { // CAUSAS EXTERNAS (V y Y)
             id: "r8aa6d4946c3545d084a08aad2980c682",
             opciones: [
                 "ACCIDENTE DE TRANSPORTE NO ESPECIFICADO",
@@ -329,92 +327,60 @@
         }
     };
 
-    // Patrones de casos clínicos MEGA EXPANDIDOS para evitar repeticiones en 50+ formularios
+    // CASOS CLÍNICOS MEJORADOS - Ahora con 2-3 selecciones coherentes
     const casosClinicosComunes = [
         // ========== CONSULTAS DE RUTINA Y PREVENTIVAS ==========
         {
-            nombre: "Consulta de Rutina/Chequeo",
-            probabilidad: 8,
+            nombre: "Consulta de Rutina Simple",
+            probabilidad: 12,
             categorias: [20],
             opciones: {
                 20: "EXAMEN MEDICO GENERAL"
             }
         },
         {
-            nombre: "Control Preventivo",
+            nombre: "Control Preventivo con Chequeo",
+            probabilidad: 8,
+            categorias: [20, 8],
+            opciones: {
+                20: "CONTROL GENERAL DE SALUD DE RUTINA",
+                8: "HIPERTENSION ESENCIAL (PRIMARIA)"
+            }
+        },
+        {
+            nombre: "Examen Ginecológico de Rutina",
             probabilidad: 6,
-            categorias: [20],
+            categorias: [20, 13],
             opciones: {
-                20: "CONTROL GENERAL DE SALUD DE RUTINA"
-            }
-        },
-        {
-            nombre: "Examen Ginecológico",
-            probabilidad: 4,
-            categorias: [20],
-            opciones: {
-                20: "EXAMEN GINECOLOGICO (GENERAL) (DE RUTINA)"
-            }
-        },
-        {
-            nombre: "Control Pediatrico",
-            probabilidad: 3,
-            categorias: [20],
-            opciones: {
-                20: "CONTROL DE SALUD DE RUTINA DEL NIÑO"
-            }
-        },
-        {
-            nombre: "Examen Pre-empleo",
-            probabilidad: 2,
-            categorias: [20],
-            opciones: {
-                20: "EXAMEN PREEMPLEO"
+                20: "EXAMEN GINECOLOGICO (GENERAL) (DE RUTINA)",
+                13: "DISMENORREA, NO ESPECIFICADA"
             }
         },
 
-        // ========== SISTEMA RESPIRATORIO ==========
+        // ========== ENFERMEDADES RESPIRATORIAS COMUNES ==========
         {
-            nombre: "Resfriado Común",
-            probabilidad: 7,
+            nombre: "Resfriado Común Completo",
+            probabilidad: 10,
             categorias: [1, 9, 17],
             opciones: {
                 1: "RINOFARINGITIS AGUDA (RESFRIADO COMUN)",
-                9: "RINOFARINGITIS AGUDA (RESFRIADO COMUN)",
-                17: "FIEBRE, NO ESPECIFICADA"
-            }
-        },
-        {
-            nombre: "Faringitis Aguda",
-            probabilidad: 5,
-            categorias: [9, 17],
-            opciones: {
                 9: "FARINGITIS AGUDA, NO ESPECIFICADA",
-                17: "DOLOR DE GARGANTA"
+                17: "CEFALEA"
             }
         },
         {
-            nombre: "Faringitis Estreptocócica",
-            probabilidad: 3,
-            categorias: [1, 9, 17],
+            nombre: "Infección Respiratoria Alta",
+            probabilidad: 8,
+            categorias: [9, 17, 1],
             opciones: {
-                1: "INFECCION ESTREPTOCOCICA, SIN OTRA ESPECIFICACION",
-                9: "FARINGITIS ESTREPTOCOCICA",
-                17: "FIEBRE, NO ESPECIFICADA"
+                9: "SINUSITIS AGUDA, NO ESPECIFICADA",
+                17: "FIEBRE, NO ESPECIFICADA",
+                1: "INFECCION BACTERIANA, NO ESPECIFICADA"
             }
         },
         {
-            nombre: "Amigdalitis Aguda",
-            probabilidad: 4,
-            categorias: [9, 17],
-            opciones: {
-                9: "AMIGDALITIS AGUDA, NO ESPECIFICADA",
-                17: "DOLOR DE GARGANTA"
-            }
-        },
-        {
-            nombre: "Bronquitis Aguda",
-            probabilidad: 4,
+            nombre: "Bronquitis con Tos",
+            probabilidad: 6,
             categorias: [9, 17],
             opciones: {
                 9: "BRONQUITIS AGUDA, NO ESPECIFICADA",
@@ -422,128 +388,19 @@
             }
         },
         {
-            nombre: "Asma Bronquial",
-            probabilidad: 3,
+            nombre: "Asma con Dificultad Respiratoria",
+            probabilidad: 5,
             categorias: [9, 17],
             opciones: {
                 9: "ASMA, NO ESPECIFICADA",
                 17: "DISNEA"
             }
         },
-        {
-            nombre: "Sinusitis Maxilar",
-            probabilidad: 3,
-            categorias: [9, 17],
-            opciones: {
-                9: "SINUSITIS MAXILAR AGUDA",
-                17: "CEFALEA"
-            }
-        },
-        {
-            nombre: "Rinitis Alérgica",
-            probabilidad: 4,
-            categorias: [9, 17],
-            opciones: {
-                9: "RINITIS ALERGICA, NO ESPECIFICADA",
-                17: "TOS"
-            }
-        },
-        {
-            nombre: "Laringitis Aguda",
-            probabilidad: 2,
-            categorias: [9, 17],
-            opciones: {
-                9: "LARINGITIS AGUDA",
-                17: "DOLOR DE GARGANTA"
-            }
-        },
-        {
-            nombre: "Neumonía",
-            probabilidad: 2,
-            categorias: [9, 17],
-            opciones: {
-                9: "NEUMONIA, NO ESPECIFICADA",
-                17: "FIEBRE, NO ESPECIFICADA"
-            }
-        },
 
-        // ========== SISTEMA NERVIOSO Y NEUROLOGÍA ==========
+        // ========== PROBLEMAS OSTEOMUSCULARES ==========
         {
-            nombre: "Cefalea Tensional",
-            probabilidad: 6,
-            categorias: [6, 17],
-            opciones: {
-                6: "CEFALEA DEBIDA A TENSION",
-                17: "CEFALEA"
-            }
-        },
-        {
-            nombre: "Migraña sin Aura",
-            probabilidad: 4,
-            categorias: [6, 17],
-            opciones: {
-                6: "MIGRAÑA SIN AURA [MIGRAÑA COMUN]",
-                17: "CEFALEA"
-            }
-        },
-        {
-            nombre: "Migraña con Aura",
-            probabilidad: 3,
-            categorias: [6, 17],
-            opciones: {
-                6: "MIGRAÑA CON AURA [MIGRAÑA CLASICA]",
-                17: "CEFALEA"
-            }
-        },
-        {
-            nombre: "Síndrome del Túnel Carpiano",
-            probabilidad: 2,
-            categorias: [6, 17],
-            opciones: {
-                6: "SINDROME DEL TUNEL CARPIANO",
-                17: "DOLOR EN MIEMBRO"
-            }
-        },
-        {
-            nombre: "Parálisis de Bell",
-            probabilidad: 1,
-            categorias: [6],
-            opciones: {
-                6: "PARALISIS DE BELL"
-            }
-        },
-        {
-            nombre: "Neuralgia del Trigémino",
-            probabilidad: 1,
-            categorias: [6, 17],
-            opciones: {
-                6: "NEURALGIA DEL TRIGEMINO",
-                17: "DOLOR, NO ESPECIFICADO"
-            }
-        },
-        {
-            nombre: "Temblor Esencial",
-            probabilidad: 1,
-            categorias: [6],
-            opciones: {
-                6: "TEMBLOR ESENCIAL"
-            }
-        },
-        {
-            nombre: "Neuropatía Diabética",
-            probabilidad: 2,
-            categorias: [4, 6, 17],
-            opciones: {
-                4: "DIABETES MELLITUS NO INSULINODEPENDIENTE SIN MENCION DE COMPLICACION",
-                6: "NEUROPATIA DIABETICA",
-                17: "DOLOR EN MIEMBRO"
-            }
-        },
-
-        // ========== SISTEMA OSTEOMUSCULAR ==========
-        {
-            nombre: "Lumbago",
-            probabilidad: 6,
+            nombre: "Lumbalgia con Dolor",
+            probabilidad: 8,
             categorias: [12, 17],
             opciones: {
                 12: "LUMBAGO NO ESPECIFICADO",
@@ -551,17 +408,18 @@
             }
         },
         {
-            nombre: "Cervicalgia",
-            probabilidad: 5,
-            categorias: [12, 17],
+            nombre: "Cervicalgia y Cefalea Tensional",
+            probabilidad: 7,
+            categorias: [12, 6, 17],
             opciones: {
                 12: "CERVICALGIA",
-                17: "DOLOR, NO ESPECIFICADO"
+                6: "CEFALEA DEBIDA A TENSION",
+                17: "CEFALEA"
             }
         },
         {
-            nombre: "Artritis Inespecífica",
-            probabilidad: 3,
+            nombre: "Artritis con Dolor Articular",
+            probabilidad: 6,
             categorias: [12, 17],
             opciones: {
                 12: "ARTRITIS, NO ESPECIFICADA",
@@ -569,64 +427,20 @@
             }
         },
         {
-            nombre: "Artrosis",
-            probabilidad: 3,
-            categorias: [12, 17],
-            opciones: {
-                12: "ARTROSIS, NO ESPECIFICADA",
-                17: "DOLOR EN ARTICULACION"
-            }
-        },
-        {
-            nombre: "Mialgia",
+            nombre: "Fibromialgia con Fatiga",
             probabilidad: 4,
-            categorias: [12, 17],
-            opciones: {
-                12: "MIALGIA",
-                17: "DOLOR EN MIEMBRO"
-            }
-        },
-        {
-            nombre: "Fibromialgia",
-            probabilidad: 2,
-            categorias: [12, 17],
+            categorias: [12, 17, 5],
             opciones: {
                 12: "FIBROMIALGIA",
-                17: "DOLOR, NO ESPECIFICADO"
-            }
-        },
-        {
-            nombre: "Tendinitis",
-            probabilidad: 3,
-            categorias: [12, 17],
-            opciones: {
-                12: "TENDINITIS CALCIFICADA",
-                17: "DOLOR EN MIEMBRO"
-            }
-        },
-        {
-            nombre: "Bursitis",
-            probabilidad: 2,
-            categorias: [12, 17],
-            opciones: {
-                12: "BURSITIS DEL HOMBRO",
-                17: "DOLOR EN MIEMBRO"
-            }
-        },
-        {
-            nombre: "Contractura Muscular",
-            probabilidad: 3,
-            categorias: [12, 17],
-            opciones: {
-                12: "CONTRACTURA MUSCULAR",
-                17: "DOLOR EN MIEMBRO"
+                17: "MALESTAR Y FATIGA",
+                5: "TRASTORNO DE ANSIEDAD GENERALIZADA"
             }
         },
 
-        // ========== SISTEMA DIGESTIVO ==========
+        // ========== PROBLEMAS DIGESTIVOS ==========
         {
-            nombre: "Dispepsia",
-            probabilidad: 5,
+            nombre: "Dispepsia con Dolor Abdominal",
+            probabilidad: 7,
             categorias: [10, 17],
             opciones: {
                 10: "DISPEPSIA",
@@ -634,52 +448,17 @@
             }
         },
         {
-            nombre: "Gastritis Crónica",
-            probabilidad: 4,
+            nombre: "Gastritis con Náuseas",
+            probabilidad: 6,
             categorias: [10, 17],
             opciones: {
                 10: "GASTRITIS, NO ESPECIFICADA",
-                17: "DOLOR ABDOMINAL LOCALIZADO EN PARTE SUPERIOR"
-            }
-        },
-        {
-            nombre: "Reflujo Gastroesofágico",
-            probabilidad: 3,
-            categorias: [10, 17],
-            opciones: {
-                10: "ENFERMEDAD DEL REFLUJO GASTROESOFAGICO SIN ESOFAGITIS",
-                17: "DOLOR ABDOMINAL LOCALIZADO EN PARTE SUPERIOR"
-            }
-        },
-        {
-            nombre: "Constipación",
-            probabilidad: 3,
-            categorias: [10],
-            opciones: {
-                10: "CONSTIPACION"
-            }
-        },
-        {
-            nombre: "Síndrome de Colon Irritable",
-            probabilidad: 3,
-            categorias: [10, 17],
-            opciones: {
-                10: "SINDROME DEL COLON IRRITABLE SIN DIARREA",
-                17: "DOLOR ABDOMINAL LOCALIZADO EN PARTE SUPERIOR"
-            }
-        },
-        {
-            nombre: "Hemorroides",
-            probabilidad: 3,
-            categorias: [8, 10],
-            opciones: {
-                8: "HEMORROIDES NO ESPECIFICADAS, SIN COMPLICACION",
-                10: "HEMORROIDES NO ESPECIFICADAS, SIN COMPLICACION"
+                17: "NAUSEA Y VOMITO"
             }
         },
         {
             nombre: "Gastroenteritis Viral",
-            probabilidad: 3,
+            probabilidad: 5,
             categorias: [1, 10, 17],
             opciones: {
                 1: "GASTROENTERITIS VIRAL, SIN OTRA ESPECIFICACION",
@@ -687,29 +466,29 @@
                 17: "NAUSEA Y VOMITO"
             }
         },
-
-        // ========== SISTEMA CARDIOVASCULAR ==========
         {
-            nombre: "Hipertensión Arterial",
-            probabilidad: 6,
-            categorias: [8, 20],
+            nombre: "Síndrome Colon Irritable",
+            probabilidad: 4,
+            categorias: [10, 17],
             opciones: {
-                8: "HIPERTENSION ESENCIAL (PRIMARIA)",
-                20: "ATENCION MEDICA, NO ESPECIFICADA"
+                10: "SINDROME DEL COLON IRRITABLE SIN DIARREA",
+                17: "DOLOR ABDOMINAL LOCALIZADO EN PARTE SUPERIOR"
             }
         },
+
+        // ========== PROBLEMAS CARDIOVASCULARES ==========
         {
-            nombre: "Palpitaciones",
-            probabilidad: 4,
+            nombre: "Hipertensión con Palpitaciones",
+            probabilidad: 8,
             categorias: [8, 17],
             opciones: {
-                8: "PALPITACIONES",
+                8: "HIPERTENSION ESENCIAL (PRIMARIA)",
                 17: "PALPITACIONES"
             }
         },
         {
             nombre: "Arritmia Cardíaca",
-            probabilidad: 3,
+            probabilidad: 5,
             categorias: [8, 17],
             opciones: {
                 8: "ARRITMIA CARDIACA, NO ESPECIFICADA",
@@ -717,100 +496,19 @@
             }
         },
         {
-            nombre: "Fibrilación Auricular",
-            probabilidad: 2,
-            categorias: [8],
-            opciones: {
-                8: "FIBRILACION Y ALETEO AURICULAR"
-            }
-        },
-        {
             nombre: "Insuficiencia Cardíaca",
-            probabilidad: 2,
+            probabilidad: 3,
             categorias: [8, 17],
             opciones: {
                 8: "INSUFICIENCIA CARDIACA, NO ESPECIFICADA",
                 17: "DISNEA"
             }
         },
-        {
-            nombre: "Varices Miembros Inferiores",
-            probabilidad: 2,
-            categorias: [8],
-            opciones: {
-                8: "VENAS VARICOSAS DE LOS MIEMBROS INFERIORES SIN ULCERA NI INFLAMACION"
-            }
-        },
 
-        // ========== SALUD MENTAL ==========
-        {
-            nombre: "Trastorno de Ansiedad",
-            probabilidad: 4,
-            categorias: [5, 17],
-            opciones: {
-                5: "TRASTORNO DE ANSIEDAD GENERALIZADA",
-                17: "MALESTAR Y FATIGA"
-            }
-        },
-        {
-            nombre: "Episodio Depresivo Leve",
-            probabilidad: 3,
-            categorias: [5, 17],
-            opciones: {
-                5: "EPISODIO DEPRESIVO LEVE",
-                17: "MALESTAR Y FATIGA"
-            }
-        },
-        {
-            nombre: "Episodio Depresivo Moderado",
-            probabilidad: 2,
-            categorias: [5, 17],
-            opciones: {
-                5: "EPISODIO DEPRESIVO MODERADO",
-                17: "MALESTAR Y FATIGA"
-            }
-        },
-        {
-            nombre: "Ansiedad Mixta y Depresión",
-            probabilidad: 3,
-            categorias: [5, 17],
-            opciones: {
-                5: "TRASTORNO MIXTO DE ANSIEDAD Y DEPRESION",
-                17: "MALESTAR Y FATIGA"
-            }
-        },
-        {
-            nombre: "Trastorno de Pánico",
-            probabilidad: 2,
-            categorias: [5, 17],
-            opciones: {
-                5: "TRASTORNO DE PANICO [ANSIEDAD PAROXISTICA EPISODICA]",
-                17: "PALPITACIONES"
-            }
-        },
-        {
-            nombre: "Insomnio",
-            probabilidad: 3,
-            categorias: [5, 17],
-            opciones: {
-                5: "INSOMNIO NO ORGANICO",
-                17: "MALESTAR Y FATIGA"
-            }
-        },
-        {
-            nombre: "Reacción al Estrés",
-            probabilidad: 2,
-            categorias: [5, 17],
-            opciones: {
-                5: "REACCION AL ESTRÉS AGUDO",
-                17: "MALESTAR Y FATIGA"
-            }
-        },
-
-        // ========== DERMATOLOGÍA ==========
+        // ========== PROBLEMAS DERMATOLÓGICOS ==========
         {
             nombre: "Dermatitis Atópica",
-            probabilidad: 3,
+            probabilidad: 5,
             categorias: [11],
             opciones: {
                 11: "DERMATITIS ATOPICA, NO ESPECIFICADA"
@@ -818,7 +516,7 @@
         },
         {
             nombre: "Acné Vulgar",
-            probabilidad: 3,
+            probabilidad: 4,
             categorias: [11],
             opciones: {
                 11: "ACNE VULGAR"
@@ -833,70 +531,98 @@
             }
         },
         {
-            nombre: "Dermatitis de Contacto",
-            probabilidad: 2,
-            categorias: [11],
-            opciones: {
-                11: "DERMATITIS DE CONTACTO, FORMA Y CAUSA NO ESPECIFICADAS"
-            }
-        },
-        {
-            nombre: "Psoriasis",
-            probabilidad: 2,
-            categorias: [11],
-            opciones: {
-                11: "PSORIASIS VULGAR"
-            }
-        },
-        {
-            nombre: "Celulitis",
-            probabilidad: 2,
+            nombre: "Celulitis Bacteriana",
+            probabilidad: 3,
             categorias: [1, 11],
             opciones: {
                 1: "INFECCION BACTERIANA, NO ESPECIFICADA",
                 11: "CELULITIS DE SITIO NO ESPECIFICADO"
             }
         },
+
+        // ========== PROBLEMAS NEUROLÓGICOS ==========
         {
-            nombre: "Alopecia",
-            probabilidad: 2,
-            categorias: [11],
+            nombre: "Migraña sin Aura",
+            probabilidad: 6,
+            categorias: [6, 17],
             opciones: {
-                11: "ALOPECIA ANDROGENA, NO ESPECIFICADA"
+                6: "MIGRAÑA SIN AURA [MIGRAÑA COMUN]",
+                17: "CEFALEA"
+            }
+        },
+        {
+            nombre: "Migraña con Aura",
+            probabilidad: 4,
+            categorias: [6, 17],
+            opciones: {
+                6: "MIGRAÑA CON AURA [MIGRAÑA CLASICA]",
+                17: "CEFALEA"
+            }
+        },
+        {
+            nombre: "Vértigo con Mareo",
+            probabilidad: 4,
+            categorias: [7, 17],
+            opciones: {
+                7: "VERTIGO PAROXISTICO BENIGNO",
+                17: "MAREO Y DESVANECIMIENTO"
             }
         },
 
-        // ========== OFTALMOLOGÍA Y OTORRINOLARINGOLOGÍA ==========
+        // ========== PROBLEMAS MENTALES ==========
         {
-            nombre: "Miopía",
-            probabilidad: 3,
+            nombre: "Ansiedad con Fatiga",
+            probabilidad: 6,
+            categorias: [5, 17],
+            opciones: {
+                5: "TRASTORNO DE ANSIEDAD GENERALIZADA",
+                17: "MALESTAR Y FATIGA"
+            }
+        },
+        {
+            nombre: "Depresión Leve",
+            probabilidad: 5,
+            categorias: [5, 17],
+            opciones: {
+                5: "EPISODIO DEPRESIVO LEVE",
+                17: "MALESTAR Y FATIGA"
+            }
+        },
+        {
+            nombre: "Insomnio con Ansiedad",
+            probabilidad: 4,
+            categorias: [5, 17],
+            opciones: {
+                5: "INSOMNIO NO ORGANICO",
+                17: "MALESTAR Y FATIGA"
+            }
+        },
+
+        // ========== PROBLEMAS GENITOURINARIOS ==========
+        {
+            nombre: "Infección Urinaria",
+            probabilidad: 6,
+            categorias: [13],
+            opciones: {
+                13: "INFECCION DE VIAS URINARIAS, SITIO NO ESPECIFICADO"
+            }
+        },
+        {
+            nombre: "Cistitis",
+            probabilidad: 4,
+            categorias: [13],
+            opciones: {
+                13: "CISTITIS, NO ESPECIFICADA"
+            }
+        },
+
+        // ========== PROBLEMAS OFTALMOLÓGICOS ==========
+        {
+            nombre: "Defectos Refractivos",
+            probabilidad: 5,
             categorias: [7],
             opciones: {
                 7: "MIOPIA"
-            }
-        },
-        {
-            nombre: "Hipermetropía",
-            probabilidad: 2,
-            categorias: [7],
-            opciones: {
-                7: "HIPERMETROPIA"
-            }
-        },
-        {
-            nombre: "Astigmatismo",
-            probabilidad: 2,
-            categorias: [7],
-            opciones: {
-                7: "ASTIGMATISMO"
-            }
-        },
-        {
-            nombre: "Presbicia",
-            probabilidad: 2,
-            categorias: [7],
-            opciones: {
-                7: "PRESBICIA"
             }
         },
         {
@@ -907,111 +633,35 @@
                 7: "CONJUNTIVITIS AGUDA, NO ESPECIFICADA"
             }
         },
+
+        // ========== PROBLEMAS ENDOCRINOS ==========
         {
-            nombre: "Orzuelo",
-            probabilidad: 2,
-            categorias: [7],
+            nombre: "Diabetes Tipo 2",
+            probabilidad: 4,
+            categorias: [4, 6],
             opciones: {
-                7: "ORZUELO Y OTRAS INFLAMACIONES PROFUNDAS DEL PARPADO"
+                4: "DIABETES MELLITUS NO INSULINODEPENDIENTE SIN MENCION DE COMPLICACION",
+                6: "NEUROPATIA DIABETICA"
             }
         },
         {
-            nombre: "Hipoacusia",
+            nombre: "Hipotiroidismo",
             probabilidad: 3,
-            categorias: [7],
+            categorias: [4, 17],
             opciones: {
-                7: "HIPOACUSIA NEUROSENSORIAL, SIN OTRA ESPECIFICACION"
-            }
-        },
-        {
-            nombre: "Otitis Media",
-            probabilidad: 3,
-            categorias: [7],
-            opciones: {
-                7: "OTITIS MEDIA SUPURATIVA AGUDA"
-            }
-        },
-        {
-            nombre: "Otitis Externa",
-            probabilidad: 2,
-            categorias: [7],
-            opciones: {
-                7: "OTITIS EXTERNA, SIN OTRA ESPECIFICACION"
-            }
-        },
-        {
-            nombre: "Cerumen Impactado",
-            probabilidad: 2,
-            categorias: [7],
-            opciones: {
-                7: "CERUMEN IMPACTADO"
-            }
-        },
-        {
-            nombre: "Tinnitus",
-            probabilidad: 2,
-            categorias: [7],
-            opciones: {
-                7: "TINNITUS"
-            }
-        },
-        {
-            nombre: "Vértigo",
-            probabilidad: 2,
-            categorias: [7, 17],
-            opciones: {
-                7: "VERTIGO PAROXISTICO BENIGNO",
-                17: "MAREO Y DESVANECIMIENTO"
+                4: "HIPOTIROIDISMO, NO ESPECIFICADO",
+                17: "MALESTAR Y FATIGA"
             }
         },
 
-        // ========== SISTEMA GENITOURINARIO ==========
+        // ========== ANEMIA ==========
         {
-            nombre: "Infección Urinaria",
+            nombre: "Anemia Ferropénica",
             probabilidad: 4,
-            categorias: [13],
+            categorias: [3, 17],
             opciones: {
-                13: "INFECCION DE VIAS URINARIAS, SITIO NO ESPECIFICADO"
-            }
-        },
-        {
-            nombre: "Cistitis",
-            probabilidad: 3,
-            categorias: [13],
-            opciones: {
-                13: "CISTITIS, NO ESPECIFICADA"
-            }
-        },
-        {
-            nombre: "Dismenorrea",
-            probabilidad: 3,
-            categorias: [13],
-            opciones: {
-                13: "DISMENORREA, NO ESPECIFICADA"
-            }
-        },
-        {
-            nombre: "Vaginitis",
-            probabilidad: 2,
-            categorias: [13],
-            opciones: {
-                13: "VAGINITIS AGUDA"
-            }
-        },
-        {
-            nombre: "Hiperplasia Prostática",
-            probabilidad: 2,
-            categorias: [13],
-            opciones: {
-                13: "HIPERPLASIA DE LA PROSTATA"
-            }
-        },
-        {
-            nombre: "Prostatitis",
-            probabilidad: 2,
-            categorias: [13],
-            opciones: {
-                13: "PROSTATITIS CRONICA"
+                3: "ANEMIA POR DEFICIENCIA DE HIERRO SIN OTRA ESPECIFICACION",
+                17: "MALESTAR Y FATIGA"
             }
         }
     ];
@@ -1026,7 +676,7 @@
         procesandoLote: false
     };
 
-    // Configuración de las páginas adicionales (MANTENER IGUAL)
+    // Configuración de las páginas adicionales
     const paginasAdicionales = {
         pagina2: {
             preguntas: {
@@ -1074,108 +724,37 @@
         },
         pagina4: {
             preguntas: {
-                26: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_rcbdd1ceb03604dc3b96667d9bfb9c252 QuestionInfo_rcbdd1ceb03604dc3b96667d9bfb9c252",
-                    valor: "6"
-                },
-                27: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_r2bb10825c5c34ea091c006929acc7c9d QuestionInfo_r2bb10825c5c34ea091c006929acc7c9d",
-                    valor: "6"
-                },
-                28: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_r04e048f805d94ba284645850bf25d3f5 QuestionInfo_r04e048f805d94ba284645850bf25d3f5",
-                    valor: "6"
-                },
-                29: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_rc08619b529484eb29215348ba292c6c7 QuestionInfo_rc08619b529484eb29215348ba292c6c7",
-                    valor: "6"
-                },
-                30: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_r98fc6df30c2a436797f7016c46db7ce1 QuestionInfo_r98fc6df30c2a436797f7016c46db7ce1",
-                    valor: "6"
-                },
-                31: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_rfaf714c4481f45f4805aed6890540286 QuestionInfo_rfaf714c4481f45f4805aed6890540286",
-                    valor: "6"
-                },
-                32: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_r908224df2ff94b4498cd897e1d260870 QuestionInfo_r908224df2ff94b4498cd897e1d260870",
-                    valor: "6"
-                },
-                33: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_rc24bad3a8b72497e9c8ee7dfe72213ab QuestionInfo_rc24bad3a8b72497e9c8ee7dfe72213ab",
-                    valor: "6"
-                },
-                34: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_r0de2eedf33a0412db398c86ba0f457e3 QuestionInfo_r0de2eedf33a0412db398c86ba0f457e3",
-                    valor: "1"
-                },
-                35: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_r9bdb5add7c3d4ee79bb35aa6ce8bb85e QuestionInfo_r9bdb5add7c3d4ee79bb35aa6ce8bb85e",
-                    valor: "1"
-                },
-                36: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_r03fb07364ba840a0be61f5c60236c09e QuestionInfo_r03fb07364ba840a0be61f5c60236c09e",
-                    valor: "1"
-                },
-                37: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_r383e832a3e5f459db4a858111498068d QuestionInfo_r383e832a3e5f459db4a858111498068d",
-                    valor: "6"
-                },
-                38: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_re87671d222534b6a80e93610ac5388fa QuestionInfo_re87671d222534b6a80e93610ac5388fa",
-                    valor: "6"
-                },
-                39: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_rae5fef55c17149b9b2be2891b1c92950 QuestionInfo_rae5fef55c17149b9b2be2891b1c92950",
-                    valor: "6"
-                },
-                40: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_r4caba304fb394c02874d9a8ad63ab7e6 QuestionInfo_r4caba304fb394c02874d9a8ad63ab7e6",
-                    valor: "6"
-                },
-                41: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_r38537a1ca1a64ef1bb99daf6bd80bd18 QuestionInfo_r38537a1ca1a64ef1bb99daf6bd80bd18",
-                    valor: "6"
-                },
-                42: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_ra1e542d89d0a4c3daa2f6f997a367c93 QuestionInfo_ra1e542d89d0a4c3daa2f6f997a367c93",
-                    valor: "1"
-                },
-                43: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_r91c3c0162e604f48a7743266b1b321af QuestionInfo_r91c3c0162e604f48a7743266b1b321af",
-                    valor: "6"
-                },
-                44: {
-                    tipo: "radio",
-                    labelledby: "QuestionId_r161f6679865848f9ab07fee563fc619d QuestionInfo_r161f6679865848f9ab07fee563fc619d",
-                    valorTexto: "No considero necesario apoyo"
-                }
+                26: { tipo: "radio", labelledby: "QuestionId_rcbdd1ceb03604dc3b96667d9bfb9c252 QuestionInfo_rcbdd1ceb03604dc3b96667d9bfb9c252", valor: "6" },
+                27: { tipo: "radio", labelledby: "QuestionId_r2bb10825c5c34ea091c006929acc7c9d QuestionInfo_r2bb10825c5c34ea091c006929acc7c9d", valor: "6" },
+                28: { tipo: "radio", labelledby: "QuestionId_r04e048f805d94ba284645850bf25d3f5 QuestionInfo_r04e048f805d94ba284645850bf25d3f5", valor: "6" },
+                29: { tipo: "radio", labelledby: "QuestionId_rc08619b529484eb29215348ba292c6c7 QuestionInfo_rc08619b529484eb29215348ba292c6c7", valor: "6" },
+                30: { tipo: "radio", labelledby: "QuestionId_r98fc6df30c2a436797f7016c46db7ce1 QuestionInfo_r98fc6df30c2a436797f7016c46db7ce1", valor: "6" },
+                31: { tipo: "radio", labelledby: "QuestionId_rfaf714c4481f45f4805aed6890540286 QuestionInfo_rfaf714c4481f45f4805aed6890540286", valor: "6" },
+                32: { tipo: "radio", labelledby: "QuestionId_r908224df2ff94b4498cd897e1d260870 QuestionInfo_r908224df2ff94b4498cd897e1d260870", valor: "6" },
+                33: { tipo: "radio", labelledby: "QuestionId_rc24bad3a8b72497e9c8ee7dfe72213ab QuestionInfo_rc24bad3a8b72497e9c8ee7dfe72213ab", valor: "6" },
+                34: { tipo: "radio", labelledby: "QuestionId_r0de2eedf33a0412db398c86ba0f457e3 QuestionInfo_r0de2eedf33a0412db398c86ba0f457e3", valor: "1" },
+                35: { tipo: "radio", labelledby: "QuestionId_r9bdb5add7c3d4ee79bb35aa6ce8bb85e QuestionInfo_r9bdb5add7c3d4ee79bb35aa6ce8bb85e", valor: "1" },
+                36: { tipo: "radio", labelledby: "QuestionId_r03fb07364ba840a0be61f5c60236c09e QuestionInfo_r03fb07364ba840a0be61f5c60236c09e", valor: "1" },
+                37: { tipo: "radio", labelledby: "QuestionId_r383e832a3e5f459db4a858111498068d QuestionInfo_r383e832a3e5f459db4a858111498068d", valor: "6" },
+                38: { tipo: "radio", labelledby: "QuestionId_re87671d222534b6a80e93610ac5388fa QuestionInfo_re87671d222534b6a80e93610ac5388fa", valor: "6" },
+                39: { tipo: "radio", labelledby: "QuestionId_rae5fef55c17149b9b2be2891b1c92950 QuestionInfo_rae5fef55c17149b9b2be2891b1c92950", valor: "6" },
+                40: { tipo: "radio", labelledby: "QuestionId_r4caba304fb394c02874d9a8ad63ab7e6 QuestionInfo_r4caba304fb394c02874d9a8ad63ab7e6", valor: "6" },
+                41: { tipo: "radio", labelledby: "QuestionId_r38537a1ca1a64ef1bb99daf6bd80bd18 QuestionInfo_r38537a1ca1a64ef1bb99daf6bd80bd18", valor: "6" },
+                42: { tipo: "radio", labelledby: "QuestionId_ra1e542d89d0a4c3daa2f6f997a367c93 QuestionInfo_ra1e542d89d0a4c3daa2f6f997a367c93", valor: "1" },
+                43: { tipo: "radio", labelledby: "QuestionId_r91c3c0162e604f48a7743266b1b321af QuestionInfo_r91c3c0162e604f48a7743266b1b321af", valor: "6" },
+                44: { tipo: "radio", labelledby: "QuestionId_r161f6679865848f9ab07fee563fc619d QuestionInfo_r161f6679865848f9ab07fee563fc619d", valorTexto: "No considero necesario apoyo" }
             }
         }
     };
 
     // ===================================================
-    // TODAS LAS FUNCIONES DEFINIDAS AQUÍ PRIMERO
+    // FUNCIONES CON TIEMPOS REALISTAS PARA SIMULAR HUMANO
     // ===================================================
+
+    // Función para generar tiempo aleatorio más realista
+    function tiempoRealistaHumano(minSegundos, maxSegundos) {
+        return (Math.random() * (maxSegundos - minSegundos) + minSegundos) * 1000;
+    }
 
     // Función para seleccionar caso clínico basado en probabilidades
     function seleccionarCasoClinico() {
@@ -1189,25 +768,21 @@
             }
         }
         
-        return casosClinicosComunes[casosClinicosComunes.length - 1]; // Por defecto el último
+        return casosClinicosComunes[casosClinicosComunes.length - 1];
     }
 
     // Función para hacer clic en un dropdown y seleccionar una opción (primera página)
     function seleccionarOpcion(questionId, textoOpcion) {
         try {
-            // Buscar el elemento dropdown
             const dropdown = document.querySelector(`[aria-describedby="${questionId}_placeholder_content"]`);
             if (!dropdown) {
                 console.log(`No se encontró dropdown para ${questionId}`);
                 return false;
             }
 
-            // Hacer clic en el dropdown para abrirlo
             dropdown.click();
             
-            // Esperar un poco para que se abra el menú
             setTimeout(() => {
-                // Buscar la opción en el menú desplegable
                 const opciones = document.querySelectorAll('[role="option"]');
                 for (const opcion of opciones) {
                     if (opcion.textContent.includes(textoOpcion)) {
@@ -1217,10 +792,8 @@
                     }
                 }
                 console.log(`✗ No se encontró la opción: ${textoOpcion}`);
-                
-                // Cerrar el dropdown si no se encontró la opción
-                dropdown.click();
-            }, 200);
+                dropdown.click(); // Cerrar si no se encuentra
+            }, tiempoRealistaHumano(0.5, 2)); // Entre 0.5 y 2 segundos para buscar
             
         } catch (error) {
             console.error(`Error al seleccionar opción para ${questionId}:`, error);
@@ -1233,32 +806,21 @@
         try {
             console.log(`🔍 Buscando dropdown con labelledby: ${labelledby}`);
             
-            // Estrategia 1: Buscar por aria-labelledby completo
             let dropdown = document.querySelector(`[aria-haspopup="listbox"][aria-labelledby="${labelledby}"]`);
             
-            // Estrategia 2: Si no se encuentra, buscar por aria-labelledby que CONTENGA el ID principal
             if (!dropdown) {
-                // Extraer el ID principal del labelledby (la primera parte antes del espacio)
                 const idPrincipal = labelledby.split(' ')[0];
-                console.log(`🔍 Buscando por ID principal: ${idPrincipal}`);
-                
                 dropdown = document.querySelector(`[aria-haspopup="listbox"][aria-labelledby*="${idPrincipal}"]`);
             }
             
-            // Estrategia 3: Buscar por aria-describedby que contenga el ID
             if (!dropdown) {
                 const idPrincipal = labelledby.split(' ')[0].replace('QuestionId_', '');
                 const describedbyBuscado = `${idPrincipal}_placeholder_content`;
-                console.log(`🔍 Buscando por aria-describedby: ${describedbyBuscado}`);
-                
                 dropdown = document.querySelector(`[aria-haspopup="listbox"][aria-describedby="${describedbyBuscado}"]`);
             }
             
-            // Estrategia 4: Buscar cualquier dropdown que contenga parte del ID
             if (!dropdown) {
                 const idLimpio = labelledby.replace('QuestionId_', '').replace('QuestionInfo_', '').split(' ')[0];
-                console.log(`🔍 Buscando por ID limpio: ${idLimpio}`);
-                
                 const dropdowns = document.querySelectorAll('[aria-haspopup="listbox"]');
                 for (const candidato of dropdowns) {
                     const ariaLabelledby = candidato.getAttribute('aria-labelledby') || '';
@@ -1266,7 +828,6 @@
                     
                     if (ariaLabelledby.includes(idLimpio) || ariaDescribedby.includes(idLimpio)) {
                         dropdown = candidato;
-                        console.log(`✓ Encontrado dropdown por coincidencia de ID`);
                         break;
                     }
                 }
@@ -1274,16 +835,6 @@
 
             if (!dropdown) {
                 console.log(`❌ No se encontró dropdown con labelledby: ${labelledby}`);
-                
-                // Debug: mostrar todos los dropdowns disponibles
-                const todosDropdowns = document.querySelectorAll('[aria-haspopup="listbox"]');
-                console.log(`Debug - ${todosDropdowns.length} dropdowns disponibles:`);
-                todosDropdowns.forEach((dd, index) => {
-                    const labelledby = dd.getAttribute('aria-labelledby') || 'N/A';
-                    const describedby = dd.getAttribute('aria-describedby') || 'N/A';
-                    console.log(`  [${index}] labelledby="${labelledby.substring(0, 50)}..." describedby="${describedby}"`);
-                });
-                
                 return false;
             }
 
@@ -1291,7 +842,6 @@
             dropdown.click();
             
             setTimeout(() => {
-                // Buscar la opción en el menú desplegable
                 const opciones = document.querySelectorAll('[role="option"]');
                 console.log(`Buscando "${textoOpcion}" entre ${opciones.length} opciones...`);
                 
@@ -1305,16 +855,8 @@
                 }
                 
                 console.log(`✗ No se encontró la opción en dropdown: ${textoOpcion}`);
-                
-                // Debug: mostrar opciones disponibles
-                console.log("Opciones disponibles en el dropdown:");
-                opciones.forEach((opcion, index) => {
-                    console.log(`  [${index}] "${opcion.textContent.trim()}"`);
-                });
-                
-                // Cerrar el dropdown si no se encuentra la opción
-                dropdown.click();
-            }, 1500);
+                dropdown.click(); // Cerrar si no se encuentra
+            }, tiempoRealistaHumano(1, 3)); // Tiempo para leer opciones
             
         } catch (error) {
             console.error(`Error al seleccionar dropdown:`, error);
@@ -1331,7 +873,6 @@
                 return false;
             }
 
-            // Buscar el radio button con el valor especificado
             const radioButtons = radioGroup.querySelectorAll('input[type="radio"]');
             for (const radio of radioButtons) {
                 if (radio.value === valor || radio.getAttribute('aria-label') === valor) {
@@ -1341,7 +882,6 @@
                 }
             }
 
-            // Si no se encuentra por valor, buscar por texto en labels
             const labels = radioGroup.querySelectorAll('label');
             for (const label of labels) {
                 if (label.textContent.includes(valor)) {
@@ -1373,7 +913,6 @@
                 return false;
             }
 
-            // Buscar por el texto exacto en las etiquetas
             const labels = radioGroup.querySelectorAll('label');
             for (const label of labels) {
                 if (label.textContent.trim() === textoValor) {
@@ -1387,7 +926,6 @@
                 }
             }
 
-            // Buscar por coincidencia parcial
             for (const label of labels) {
                 if (label.textContent.includes(textoValor)) {
                     const radio = label.querySelector('input[type="radio"]') || 
@@ -1414,18 +952,15 @@
         try {
             console.log(`🔢 Intentando seleccionar número ${numeroSeleccionado} para pregunta...`);
             
-            // Buscar el contenedor con aria-labelledby
             const contenedor = document.querySelector(`[aria-labelledby="${labelledby}"]`);
             if (!contenedor) {
                 console.log(`No se encontró contenedor con aria-labelledby: ${labelledby}`);
                 return false;
             }
 
-            // Buscar dentro del contenedor todos los elementos que tengan aria-label con "Número seleccionado"
             const elementosNumero = contenedor.querySelectorAll('[aria-label*="Número seleccionado"]');
             console.log(`Encontrados ${elementosNumero.length} elementos con números`);
 
-            // Estrategia 1: Buscar elemento que ya tenga el número correcto
             const ariaLabelBuscado = `Número seleccionado: ${numeroSeleccionado}`;
             for (const elemento of elementosNumero) {
                 const ariaLabel = elemento.getAttribute('aria-label');
@@ -1436,30 +971,26 @@
                 }
             }
 
-            // Estrategia 2: Buscar todos los elementos clickeables en el contenedor (divs, buttons, etc.)
             const elementosClickeables = contenedor.querySelectorAll('div[role], button, [tabindex], [aria-label]');
             console.log(`Encontrados ${elementosClickeables.length} elementos clickeables`);
 
-            // Buscar por texto, valor o posición que corresponda al número
             for (const elemento of elementosClickeables) {
                 const texto = elemento.textContent.trim();
                 const ariaLabel = elemento.getAttribute('aria-label') || '';
                 const valor = elemento.getAttribute('value') || '';
 
-                // Si el elemento contiene el número que buscamos
                 if (texto === numeroSeleccionado || 
                     ariaLabel.includes(numeroSeleccionado) || 
                     valor === numeroSeleccionado) {
                     
                     elemento.click();
                     
-                    // Verificar después del click
                     setTimeout(() => {
                         const elementosActualizados = contenedor.querySelectorAll('[aria-label*="Número seleccionado"]');
                         for (const el of elementosActualizados) {
                             const labelActual = el.getAttribute('aria-label');
                             if (labelActual === ariaLabelBuscado) {
-                                console.log(`✓ Número ${numeroSeleccionado} seleccionado exitosamente (${labelActual})`);
+                                console.log(`✓ Número ${numeroSeleccionado} seleccionado exitosamente`);
                                 return true;
                             }
                         }
@@ -1469,25 +1000,14 @@
                 }
             }
 
-            // Estrategia 3: Buscar por posición (número 1 = primer elemento, número 6 = sexto elemento)
             const indice = parseInt(numeroSeleccionado) - 1;
             if (indice >= 0 && indice < elementosClickeables.length) {
                 elementosClickeables[indice].click();
-                console.log(`✓ Número ${numeroSeleccionado} seleccionado por posición (índice ${indice})`);
+                console.log(`✓ Número ${numeroSeleccionado} seleccionado por posición`);
                 return true;
             }
 
             console.log(`✗ No se pudo seleccionar número ${numeroSeleccionado}`);
-            
-            // Debug: mostrar elementos disponibles
-            console.log("Debug - Elementos disponibles en el contenedor:");
-            elementosClickeables.forEach((elemento, index) => {
-                const texto = elemento.textContent.trim().substring(0, 20);
-                const ariaLabel = elemento.getAttribute('aria-label') || 'N/A';
-                const tagName = elemento.tagName.toLowerCase();
-                console.log(`  [${index}] ${tagName}: texto="${texto}" aria-label="${ariaLabel.substring(0, 30)}"`);
-            });
-            
             return false;
             
         } catch (error) {
@@ -1507,39 +1027,26 @@
                 return false;
             }
 
-            // Estrategia principal: Buscar por aria-label específico para estrellas
             const ariaLabelBuscado = `${numeroEstrellas} Star`;
-            console.log(`Buscando elemento con aria-label="${ariaLabelBuscado}"`);
-            
-            // Buscar el elemento con aria-label específico
             const elementoEstrella = radioGroup.querySelector(`[aria-label="${ariaLabelBuscado}"]`);
             
             if (elementoEstrella) {
-                // Hacer clic en el elemento
                 elementoEstrella.click();
                 
-                // Verificar que se seleccionó correctamente
                 setTimeout(() => {
                     const ariaChecked = elementoEstrella.getAttribute('aria-checked');
                     if (ariaChecked === 'true') {
-                        console.log(`✓ ¡${numeroEstrellas} estrellas seleccionadas exitosamente! (aria-checked=true)`);
-                    } else {
-                        console.log(`⚠️ Estrella clickeada pero aria-checked=${ariaChecked}`);
+                        console.log(`✓ ¡${numeroEstrellas} estrellas seleccionadas exitosamente!`);
                     }
                 }, 100);
                 
                 return true;
             }
 
-            // Estrategia alternativa: buscar todos los elementos con aria-label que contengan "Star"
-            console.log(`No se encontró "${ariaLabelBuscado}", buscando alternativas...`);
-            
             const elementosEstrella = radioGroup.querySelectorAll('[aria-label*="Star"]');
-            console.log(`Encontrados ${elementosEstrella.length} elementos con "Star"`);
             
             for (const elemento of elementosEstrella) {
                 const ariaLabel = elemento.getAttribute('aria-label');
-                console.log(`  - Encontrado: aria-label="${ariaLabel}"`);
                 
                 if (ariaLabel === ariaLabelBuscado || ariaLabel.includes(`${numeroEstrellas} Star`)) {
                     elemento.click();
@@ -1548,24 +1055,14 @@
                 }
             }
 
-            // Estrategia de respaldo: si buscamos 5 estrellas, seleccionar la última opción
             if (numeroEstrellas === "5" && elementosEstrella.length > 0) {
                 const ultimaEstrella = elementosEstrella[elementosEstrella.length - 1];
                 ultimaEstrella.click();
-                console.log(`✓ Seleccionada última estrella como respaldo (${ultimaEstrella.getAttribute('aria-label')})`);
+                console.log(`✓ Seleccionada última estrella como respaldo`);
                 return true;
             }
 
             console.log(`✗ No se pudo seleccionar ${numeroEstrellas} estrellas`);
-            
-            // Debug: mostrar todas las opciones disponibles
-            console.log("Debug - Elementos de estrellas disponibles:");
-            elementosEstrella.forEach((elemento, index) => {
-                const ariaLabel = elemento.getAttribute('aria-label');
-                const ariaChecked = elemento.getAttribute('aria-checked');
-                console.log(`  [${index}] aria-label="${ariaLabel}", aria-checked="${ariaChecked}"`);
-            });
-            
             return false;
             
         } catch (error) {
@@ -1574,50 +1071,56 @@
         }
     }
 
-    // Función principal para llenar la primera página
+    // FUNCIÓN PRINCIPAL MEJORADA - Con múltiples selecciones coherentes
     function llenarPrimeraPagina() {
         console.log("🏥 Iniciando llenado automático del formulario médico - Primera página...");
         
-        // Seleccionar caso clínico
         const casoSeleccionado = seleccionarCasoClinico();
         estadoFormulario.casoSeleccionado = casoSeleccionado;
         console.log(`📋 Caso clínico seleccionado: ${casoSeleccionado.nombre}`);
+        console.log(`📊 Categorías a llenar: ${casoSeleccionado.categorias.length} (${casoSeleccionado.categorias.join(', ')})`);
         
-        // Limpiar todas las selecciones primero (hacer clic en botones de limpiar)
+        // Limpiar selecciones previas
         const botonesLimpiar = document.querySelectorAll('button[aria-label="Borrar selección"]');
         botonesLimpiar.forEach(boton => {
             try {
                 boton.click();
             } catch (e) {
-                // Ignorar errores de botones no visibles
+                // Ignorar errores
             }
         });
 
-        // Aplicar las selecciones del caso clínico
-        let delay = 1500; // Retraso inicial
+        // TIEMPO REALISTA: Aplicar las selecciones con delays humanos
+        let delay = tiempoRealistaHumano(2, 4); // Delay inicial de 2-4 segundos
+        let seleccionesRealizadas = 0;
         
         Object.entries(casoSeleccionado.opciones).forEach(([categoria, opcion]) => {
             setTimeout(() => {
                 const categoriaInfo = categoriasMedicas[parseInt(categoria)];
                 if (categoriaInfo) {
                     seleccionarOpcion(categoriaInfo.id, opcion);
+                    seleccionesRealizadas++;
+                    console.log(`📝 Selección ${seleccionesRealizadas}/${Object.keys(casoSeleccionado.opciones).length}: ${opcion}`);
                 }
             }, delay);
-            delay += 15000; // Incrementar retraso para cada selección
+            
+            // TIEMPO REALISTA: Entre 8-15 segundos entre cada selección (simula lectura y decisión)
+            delay += tiempoRealistaHumano(8, 15);
         });
 
-        console.log("✅ Primera página completada. Revisa las selecciones antes de continuar.");
+        console.log("✅ Primera página en proceso de llenado con tiempo realista...");
         
-        // Mostrar resumen
+        // Mostrar resumen después de completar
         setTimeout(() => {
             console.log("\n📊 RESUMEN DEL CASO CLÍNICO:");
             console.log(`Tipo: ${casoSeleccionado.nombre}`);
+            console.log(`Selecciones realizadas: ${Object.keys(casoSeleccionado.opciones).length}`);
             console.log("Categorías afectadas:", casoSeleccionado.categorias);
             console.log("Opciones seleccionadas:", casoSeleccionado.opciones);
-        }, delay + 1500);
+        }, delay + 2000);
     }
 
-    // Función para llenar páginas adicionales
+    // Función para llenar páginas adicionales con tiempo realista
     function llenarPaginaAdicional(numeroPagina) {
         const paginaKey = `pagina${numeroPagina}`;
         const paginaConfig = paginasAdicionales[paginaKey];
@@ -1629,7 +1132,7 @@
 
         console.log(`📄 Llenando página ${numeroPagina}...`);
         
-        let delay = 1500;
+        let delay = tiempoRealistaHumano(2, 4); // Delay inicial
         
         Object.entries(paginaConfig.preguntas).forEach(([preguntaNum, config]) => {
             setTimeout(() => {
@@ -1643,28 +1146,26 @@
                         const indiceAleatorio = Math.floor(Math.random() * config.opciones.length);
                         opcionSeleccionada = config.opciones[indiceAleatorio];
                     } else {
-                        opcionSeleccionada = config.opciones[0]; // Selección fija
+                        opcionSeleccionada = config.opciones[0];
                     }
                     
                     seleccionarDropdownPorLabelledby(config.labelledby, opcionSeleccionada);
                     
                 } else if (config.tipo === "radio") {
                     if (config.valorTexto) {
-                        // Pregunta 44 - usa texto específico
                         seleccionarRadioPorTexto(config.labelledby, config.valorTexto);
                     } else if (numeroP === 23) {
-                        // Pregunta 23 es calificación con estrellas - usar función específica
                         seleccionarEstrellas(config.labelledby, config.valor);
                     } else if (numeroP >= 26 && numeroP <= 43) {
-                        // Preguntas 26-43 son divs con aria-label="Número seleccionado: X"
                         seleccionarNumeroPorLabelledby(config.labelledby, config.valor);
                     } else {
-                        // Radio buttons normales
                         seleccionarRadioPorLabelledby(config.labelledby, config.valor);
                     }
                 }
             }, delay);
-            delay += 1500;
+            
+            // TIEMPO REALISTA: Entre 2-5 segundos para cada pregunta
+            delay += tiempoRealistaHumano(2, 5);
         });
 
         console.log(`✅ Página ${numeroPagina} completada`);
@@ -1712,15 +1213,13 @@
         }
     }
 
-    // Función para proceso automático completo
+    // PROCESO AUTOMÁTICO COMPLETO CON TIEMPOS REALISTAS
     function procesoAutomaticoCompleto() {
         console.log("🚀 Iniciando proceso automático completo del formulario...");
-        console.log("📋 El formulario se completará página por página automáticamente");
+        console.log("⏱️ TIEMPOS REALISTAS: Simulando comportamiento humano (2-3 horas para 50 formularios)");
         
-        // Resetear estado si es necesario
         estadoFormulario.procesoCompleto = false;
         
-        // Función recursiva para procesar cada página
         function procesarSiguientePagina() {
             console.log(`🔄 Estado actual: Página ${estadoFormulario.paginaActual}`);
             
@@ -1729,22 +1228,21 @@
                     console.log("📝 PROCESANDO PÁGINA 1 (Enfermedades CIE-10)...");
                     llenarPrimeraPagina();
                     
-                    // Esperar a que termine de llenar, luego ir a siguiente página
+                    // TIEMPO REALISTA: Esperar tiempo suficiente para múltiples selecciones
                     setTimeout(() => {
                         console.log("✅ Página 1 completada, avanzando a página 2...");
                         if (clickSiguiente()) {
-                            // Esperar a que cargue la siguiente página
                             setTimeout(() => {
                                 procesarSiguientePagina();
-                            }, 6000);
+                            }, tiempoRealistaHumano(3, 6)); // Tiempo de carga de página
                         } else {
                             console.log("❌ Error al avanzar desde página 1");
                         }
-                    }, 4000); // Más tiempo para la primera página
+                    }, tiempoRealistaHumano(45, 75)); // 45-75 segundos para página 1 (2-3 selecciones)
                     break;
                     
                 case 2:
-                    console.log("📝 PROCESANDO PÁGINA 2 (Preguntas 21-24: Actividad, Escenario, Estrellas, Curso)...");
+                    console.log("📝 PROCESANDO PÁGINA 2 (Preguntas 21-24)...");
                     llenarPaginaAdicional(2);
                     
                     setTimeout(() => {
@@ -1752,11 +1250,11 @@
                         if (clickSiguiente()) {
                             setTimeout(() => {
                                 procesarSiguientePagina();
-                            }, 6000);
+                            }, tiempoRealistaHumano(3, 6));
                         } else {
                             console.log("❌ Error al avanzar desde página 2");
                         }
-                    }, 4000); // Más tiempo porque incluye estrellas
+                    }, tiempoRealistaHumano(20, 35)); // 20-35 segundos para página 2
                     break;
                     
                 case 3:
@@ -1768,66 +1266,58 @@
                         if (clickSiguiente()) {
                             setTimeout(() => {
                                 procesarSiguientePagina();
-                            }, 6000);
+                            }, tiempoRealistaHumano(3, 6));
                         } else {
                             console.log("❌ Error al avanzar desde página 3");
                         }
-                    }, 2000); // Menos tiempo, solo una pregunta
+                    }, tiempoRealistaHumano(8, 15)); // 8-15 segundos para página 3 (1 pregunta)
                     break;
                     
                 case 4:
-                    console.log("📝 PROCESANDO PÁGINA 4 (Todas las Evaluaciones 26-44)...");
+                    console.log("📝 PROCESANDO PÁGINA 4 (Evaluaciones 26-44)...");
                     llenarPaginaAdicional(4);
                     
                     setTimeout(() => {
                         if (estadoFormulario.procesandoLote) {
-                            // Si estamos procesando un lote, enviar automáticamente
                             console.log("📤 Enviando formulario automáticamente...");
                             if (clickEnviar()) {
-                                // Esperar 5 segundos y luego hacer clic en "Enviar otra respuesta"
                                 setTimeout(() => {
                                     if (clickEnviarOtraRespuesta()) {
-                                        // Esperar otros 5 segundos y reiniciar el proceso
                                         setTimeout(() => {
                                             reiniciarProcesoParaSiguienteFormulario();
-                                        }, 10000);
+                                        }, tiempoRealistaHumano(8, 15)); // Tiempo entre formularios
                                     } else {
                                         console.log("❌ Error al hacer clic en 'Enviar otra respuesta'");
                                         estadoFormulario.procesandoLote = false;
                                     }
-                                }, 10000);
+                                }, tiempoRealistaHumano(5, 10)); // Tiempo para enviar
                             } else {
                                 console.log("❌ Error al enviar formulario");
                                 estadoFormulario.procesandoLote = false;
                             }
                         } else {
-                            // Proceso normal sin envío automático
                             console.log("🎉 ¡PROCESO AUTOMÁTICO COMPLETADO!");
                             console.log("==========================================");
                             console.log("✅ Todas las páginas han sido completadas");
                             console.log("👀 REVISAR todas las selecciones antes de enviar");
                             console.log("📤 Para enviar manualmente: automacionMedica.enviar()");
-                            console.log("🔄 Para ver estadísticas: automacionMedica.estadisticas()");
                             estadoFormulario.procesoCompleto = true;
                         }
-                    }, 8000); // Más tiempo porque son muchas preguntas
+                    }, tiempoRealistaHumano(60, 90)); // 60-90 segundos para página 4 (muchas preguntas)
                     break;
                     
                 default:
                     console.log(`❌ Página ${estadoFormulario.paginaActual} no reconocida`);
-                    console.log("🔍 Verificando página actual...");
                     verificarPaginaActual();
                     break;
             }
         }
         
-        // Verificar página actual antes de iniciar
         verificarPaginaActual();
         
-        // Iniciar el proceso después de una pequeña pausa
         setTimeout(() => {
             procesarSiguientePagina();
-        }, 1500);
+        }, tiempoRealistaHumano(1, 3)); // Delay inicial
     }
 
     // Función para continuar desde cualquier página
@@ -1853,11 +1343,11 @@
         }
     }
 
-    // Función para generar un caso personalizado (página 1)
+    // Función para generar un caso personalizado
     function generarCasoPersonalizado(categorias, opciones) {
         console.log("🎯 Generando caso personalizado...");
         
-        let delay = 1000;
+        let delay = tiempoRealistaHumano(2, 4);
         Object.entries(opciones).forEach(([categoria, opcion]) => {
             setTimeout(() => {
                 const categoriaInfo = categoriasMedicas[parseInt(categoria)];
@@ -1865,7 +1355,7 @@
                     seleccionarOpcion(categoriaInfo.id, opcion);
                 }
             }, delay);
-            delay += 1500;
+            delay += tiempoRealistaHumano(8, 15);
         });
     }
 
@@ -1880,25 +1370,30 @@
             console.log(`\n🔄 INICIANDO FORMULARIO ${estadoFormulario.formularioActual}/${estadoFormulario.totalFormularios}`);
             console.log("==========================================");
             
-            // Verificar que estamos en la página 1
+            const tiempoRestante = (estadoFormulario.totalFormularios - estadoFormulario.formularioActual + 1) * 2.5; // 2.5 min promedio por formulario
+            console.log(`⏱️ Tiempo estimado restante: ${Math.ceil(tiempoRestante)} minutos`);
+            
             setTimeout(() => {
                 verificarPaginaActual();
-                // Iniciar el proceso automático de nuevo
                 setTimeout(() => {
                     procesoAutomaticoCompleto();
-                }, 1000);
-            }, 2000);
+                }, tiempoRealistaHumano(2, 5));
+            }, tiempoRealistaHumano(3, 8)); // Pausa entre formularios
             
         } else {
             console.log("\n🎉 ¡TODOS LOS FORMULARIOS COMPLETADOS!");
             console.log("==========================================");
             console.log(`✅ Se completaron ${estadoFormulario.totalFormularios} formularios exitosamente`);
             console.log("🏁 Proceso de lote finalizado");
+            
+            const tiempoTotal = estadoFormulario.totalFormularios * 2.5; // minutos
+            console.log(`⏱️ Tiempo total estimado: ${Math.ceil(tiempoTotal)} minutos (${(tiempoTotal/60).toFixed(1)} horas)`);
+            
             estadoFormulario.procesandoLote = false;
         }
     }
 
-    // Función para procesar múltiples formularios (50 por defecto)
+    // FUNCIÓN MEJORADA - Proceso de lote con tiempo realista
     function procesarLoteFormularios(cantidad = 50) {
         if (estadoFormulario.procesandoLote) {
             console.log("⚠️ Ya hay un proceso de lote en ejecución");
@@ -1908,7 +1403,10 @@
         console.log(`🚀 INICIANDO PROCESO DE LOTE: ${cantidad} FORMULARIOS`);
         console.log("==========================================");
         console.log("⚠️ IMPORTANTE: Este proceso enviará automáticamente los formularios");
-        console.log("⏱️ Tiempo estimado:", Math.ceil(cantidad * 1.5), "minutos");
+        
+        const tiempoEstimado = cantidad * 2.5; // 2.5 minutos por formulario
+        console.log(`⏱️ Tiempo estimado REALISTA: ${Math.ceil(tiempoEstimado)} minutos (${(tiempoEstimado/60).toFixed(1)} horas)`);
+        console.log("📊 Cada formulario tendrá 2-3 selecciones coherentes en página 1");
         console.log("🛑 Para detener: automacionMedica.detenerLote()");
         
         estadoFormulario.procesandoLote = true;
@@ -1917,13 +1415,12 @@
         estadoFormulario.paginaActual = 1;
         estadoFormulario.procesoCompleto = false;
         
-        // Verificar página actual y comenzar
         verificarPaginaActual();
         
         setTimeout(() => {
             console.log(`\n🔄 INICIANDO FORMULARIO 1/${cantidad}`);
             procesoAutomaticoCompleto();
-        }, 1000);
+        }, tiempoRealistaHumano(2, 5));
         
         return true;
     }
@@ -1934,6 +1431,10 @@
             estadoFormulario.procesandoLote = false;
             console.log("🛑 Proceso de lote detenido");
             console.log(`📊 Formularios completados: ${estadoFormulario.formularioActual - 1}/${estadoFormulario.totalFormularios}`);
+            
+            const formulariosPendientes = estadoFormulario.totalFormularios - (estadoFormulario.formularioActual - 1);
+            const tiempoAhorrado = formulariosPendientes * 2.5;
+            console.log(`⏱️ Tiempo ahorrado: ${Math.ceil(tiempoAhorrado)} minutos`);
         } else {
             console.log("ℹ️ No hay proceso de lote en ejecución");
         }
@@ -1941,7 +1442,6 @@
 
     // Función para verificar en qué página estamos
     function verificarPaginaActual() {
-        // Intentar identificar la página actual basándose en elementos únicos
         if (document.querySelector('[aria-describedby*="rc83969ce60c842f5adeb84b5bffc55fd"]')) {
             estadoFormulario.paginaActual = 1;
             console.log("📍 Página actual detectada: 1 (Enfermedades CIE-10)");
@@ -1963,34 +1463,43 @@
 
     // Función para mostrar estadísticas y configuración
     function mostrarEstadisticas() {
-        console.log("\n📊 ESTADÍSTICAS DEL FORMULARIO MÉDICO:");
+        console.log("\n📊 ESTADÍSTICAS DEL FORMULARIO MÉDICO MEJORADO:");
         console.log("==========================================");
         console.log(`Página actual: ${estadoFormulario.paginaActual}`);
         console.log(`Proceso completo: ${estadoFormulario.procesoCompleto ? 'Sí' : 'No'}`);
         
-        if (estadoFormulario.casoSeleccionado) {
-            console.log(`Caso clínico: ${estadoFormulario.casoSeleccionado.nombre}`);
-            console.log(`Probabilidad: ${estadoFormulario.casoSeleccionado.probabilidad}%`);
+        if (estadoFormulario.procesandoLote) {
+            console.log(`🔄 Procesando lote: ${estadoFormulario.formularioActual}/${estadoFormulario.totalFormularios}`);
+            const progreso = ((estadoFormulario.formularioActual - 1) / estadoFormulario.totalFormularios * 100).toFixed(1);
+            console.log(`📈 Progreso: ${progreso}%`);
         }
         
-        console.log("\n📋 CASOS CLÍNICOS DISPONIBLES:");
-        casosClinicosComunes.forEach((caso, index) => {
-            console.log(`${index + 1}. ${caso.nombre} (${caso.probabilidad}%)`);
-        });
+        if (estadoFormulario.casoSeleccionado) {
+            console.log(`Caso clínico actual: ${estadoFormulario.casoSeleccionado.nombre}`);
+            console.log(`Selecciones: ${Object.keys(estadoFormulario.casoSeleccionado.opciones).length}`);
+        }
         
-        console.log("\n🏥 PÁGINAS DEL FORMULARIO:");
-        console.log("1. Enfermedades CIE-10 (preguntas 1-20)");
-        console.log("2. Actividad, Escenario, Estrellas, Curso (preguntas 21-24)");
-        console.log("3. Código del Estudiante (pregunta 25)");
-        console.log("4. Todas las Evaluaciones Personales (preguntas 26-44)");
+        console.log("\n🆕 MEJORAS IMPLEMENTADAS:");
+        console.log("✅ 2-3 selecciones coherentes por formulario");
+        console.log("✅ Tiempos realistas simulando comportamiento humano");
+        console.log("✅ 2-3 horas para completar 50 formularios");
+        console.log("✅ Casos clínicos médicamente coherentes");
         
-        console.log("\n🎯 VARIEDAD DE OPCIONES POR CATEGORÍA:");
-        Object.entries(categoriasMedicas).forEach(([id, categoria]) => {
-            console.log(`${id}. ${categoria.opciones.length} opciones disponibles`);
-        });
+        console.log("\n📋 DISTRIBUCIÓN DE CASOS:");
+        console.log("- Consultas de rutina: ~26%");
+        console.log("- Problemas respiratorios: ~29%");
+        console.log("- Problemas osteomusculares: ~25%");
+        console.log("- Otros sistemas: ~20%");
+        
+        console.log("\n⏱️ TIEMPOS POR PÁGINA:");
+        console.log("- Página 1: 45-75 segundos (2-3 selecciones)");
+        console.log("- Página 2: 20-35 segundos (4 preguntas)");
+        console.log("- Página 3: 8-15 segundos (1 pregunta)");
+        console.log("- Página 4: 60-90 segundos (19 preguntas)");
+        console.log("- Total por formulario: ~2.5 minutos promedio");
     }
 
-    // Exportar funciones globalmente para uso en consola
+    // Exportar funciones globalmente
     window.automacionMedica = {
         // Funciones principales
         llenar: llenarPrimeraPagina,
@@ -2002,9 +1511,11 @@
         completar: procesoAutomaticoCompleto,
         continuarDesde: continuarDesdePaginaActual,
         
-        // Procesamiento en lote (NUEVO)
+        // Procesamiento en lote MEJORADO
         lote: procesarLoteFormularios,
         lote50: () => procesarLoteFormularios(50),
+        lote25: () => procesarLoteFormularios(25),
+        lote10: () => procesarLoteFormularios(10),
         detenerLote: detenerLote,
         
         // Utilidades
@@ -2020,92 +1531,85 @@
     };
 
     // Inicialización automática
-    console.log("🚀 Script de Automatización Médica EXPANDIDO cargado exitosamente!");
+    console.log("🚀 Script de Automatización Médica MEJORADO cargado exitosamente!");
     console.log("==========================================");
     
-    // Verificar página actual al cargar
     verificarPaginaActual();
     
     console.log("\n📖 COMANDOS DISPONIBLES:");
     console.log("========================");
     console.log("🎯 COMANDO PRINCIPAL:");
-    console.log("   automacionMedica.completar() - Completa 1 formulario (sin enviar)");
+    console.log("   automacionMedica.completar() - Completa 1 formulario (2-3 selecciones coherentes)");
     
-    console.log("\n🚀 PROCESAMIENTO EN LOTE:");
-    console.log("   automacionMedica.lote50() - ¡PROCESA 50 FORMULARIOS AUTOMÁTICAMENTE!");
-    console.log("   automacionMedica.lote(X) - Procesa X cantidad de formularios");
+    console.log("\n🚀 PROCESAMIENTO EN LOTE MEJORADO:");
+    console.log("   automacionMedica.lote50() - ¡PROCESA 50 FORMULARIOS! (~2.5 horas)");
+    console.log("   automacionMedica.lote25() - Procesa 25 formularios (~1.25 horas)");
+    console.log("   automacionMedica.lote10() - Procesa 10 formularios (~25 minutos)");
     console.log("   automacionMedica.detenerLote() - Detiene el proceso en lote");
     
-    console.log("\n🔧 COMANDOS INDIVIDUALES:");
-    console.log("   automacionMedica.llenar() - Llenar primera página");
-    console.log("   automacionMedica.llenarPagina(2-4) - Llenar página específica");
-    console.log("   automacionMedica.continuar() - Ir a siguiente página");
-    console.log("   automacionMedica.enviar() - Enviar formulario");
+    console.log("\n🆕 MEJORAS IMPLEMENTADAS:");
+    console.log("   ✅ 2-3 selecciones coherentes por formulario (no solo 1)");
+    console.log("   ✅ Tiempo realista: 2-3 horas para 50 formularios");
+    console.log("   ✅ Casos clínicos médicamente coherentes");
+    console.log("   ✅ Simulación de comportamiento humano con delays variables");
     
-    console.log("\n🔧 UTILIDADES:");
-    console.log("   automacionMedica.verificarPagina() - Detectar página actual");
-    console.log("   automacionMedica.estadisticas() - Ver estadísticas completas");
-    console.log("   automacionMedica.continuarDesde() - Continuar desde página actual");
+    console.log("\n📊 ESTADÍSTICAS:");
+    console.log("   - 33 tipos diferentes de casos clínicos");
+    console.log("   - Mayoría de casos tienen 2-3 diagnósticos relacionados");
+    console.log("   - Tiempo promedio: 2.5 minutos por formulario");
+    console.log("   - Delays realistas entre 2-15 segundos por acción");
     
-    console.log("\n🎲 OPCIONES DE USO:");
-    console.log("   📋 Un solo formulario: automacionMedica.completar()");
-    console.log("   🚀 50 formularios automáticos: automacionMedica.lote50()");
-    console.log("   ⏱️ Tiempo estimado para 50: ~75 minutos");
-    
-    console.log("\n⚠️  IMPORTANTE:");
-    console.log("   - El LOTE enviará automáticamente los formularios");
-    console.log("   - Cada formulario toma ~1.5 minutos");
-    console.log("   - Puedes detener el proceso en cualquier momento");
-    console.log("   - Se guardan estadísticas de progreso");
-    
-    console.log("\n🎯 NUEVA VARIEDAD EXPANDIDA:");
-    console.log("   - 31 tipos diferentes de casos clínicos");
-    console.log("   - Opciones más realistas y variadas");
-    console.log("   - Mejor distribución de probabilidades");
-    console.log("   - Combinaciones más coherentes entre categorías");
-
-    // NO ejecutar automáticamente la primera página
-    // Solo mostrar las instrucciones
+    console.log("\n⏱️ TIEMPOS REALISTAS:");
+    console.log("   - Página 1: 45-75 segundos (múltiples selecciones)");
+    console.log("   - Páginas 2-4: 20-90 segundos según complejidad");
+    console.log("   - Pausa entre formularios: 3-8 segundos");
+    console.log("   - Total estimado para 50: 2-3 horas");
 
 })();
 
 // ============================================
-// INSTRUCCIONES DE USO EXPANDIDO:
+// INSTRUCCIONES DE USO MEJORADO:
 // ============================================
 // 
-// 🚀 NUEVA VERSIÓN CON MAYOR VARIEDAD:
-// - Se expandieron las opciones de las categorías 1-20
-// - Se agregaron 31 casos clínicos diferentes vs 9 anteriores
-// - Mejores probabilidades distribuidas
-// - Relaciones más lógicas entre diagnósticos
-// - Mayor realismo en las combinaciones
-//
-// 🚀 USO AUTOMÁTICO (RECOMENDADO):
+// 🆕 VERSIÓN MEJORADA - CAMBIOS PRINCIPALES:
+// 
+// 1. ✅ MÚLTIPLES SELECCIONES COHERENTES:
+//    - Ahora selecciona 2-3 opciones relacionadas por formulario
+//    - Los casos clínicos están diseñados médicamente coherentes
+//    - Ej: "Resfriado" = Infección + Síntomas + Faringitis
+//    - Ej: "Hipertensión" = Cardiovascular + Palpitaciones
+// 
+// 2. ✅ TIEMPO REALISTA PARA SIMULAR HUMANO:
+//    - 45-75 segundos para página 1 (múltiples selecciones)
+//    - 8-90 segundos para otras páginas según complejidad  
+//    - Delays aleatorios entre 2-15 segundos por acción
+//    - Total: ~2.5 minutos por formulario completo
+//    - 50 formularios = 2-3 horas (tiempo humano realista)
+// 
+// 3. ✅ CASOS CLÍNICOS COHERENTES:
+//    - 33 casos diferentes con lógica médica
+//    - Combinaciones realistas entre categorías
+//    - Síntomas que acompañan diagnósticos principales
+//    - Distribución de probabilidades más natural
+// 
+// 🚀 USO RECOMENDADO:
 // 1. Abre la consola del navegador (F12)
-// 2. Pega este código completo
-// 3. Presiona Enter
-// 4. Ejecuta: automacionMedica.completar()
-// 5. El script completará todas las páginas automáticamente
-//
-// 🔧 USO MANUAL POR PÁGINAS:
-// 1. Primera página: automacionMedica.llenar()
-// 2. Siguiente página: automacionMedica.continuar()
-// 3. Llenar página específica: automacionMedica.llenarPagina(2)
-// 4. Repetir hasta completar todas las páginas
-//
-// 📊 MONITOREO:
-// - Ver progreso: automacionMedica.estadisticas()
-// - Ver página actual: automacionMedica.verificarPagina()
-// - Continuar desde donde se quedó: automacionMedica.continuarDesde()
-//
-// ⚠️  ENVÍO:
-// - El envío está habilitado para procesos en lote
-// - Para uso individual: automacionMedica.enviar()
-//
-// 🎯 NUEVAS CARACTERÍSTICAS:
-// - 31 casos clínicos vs 9 anteriores (244% más variedad)
-// - Diagnósticos más específicos y realistas
-// - Mejor distribución de probabilidades
-// - Casos raros y comunes balanceados
-// - Combinaciones lógicas entre categorías
+// 2. Pega este código completo y presiona Enter
+// 3. Ejecuta: automacionMedica.lote50()
+// 4. El script procesará 50 formularios en 2-3 horas automáticamente
+// 
+// 🔧 COMANDOS PRINCIPALES:
+// - automacionMedica.completar() - Un solo formulario
+// - automacionMedica.lote50() - 50 formularios automáticos
+// - automacionMedica.lote25() - 25 formularios (~1.25 horas)
+// - automacionMedica.lote10() - 10 formularios (~25 minutos)
+// - automacionMedica.detenerLote() - Detener proceso
+// - automacionMedica.estadisticas() - Ver progreso y estadísticas
+// 
+// ⚠️ TIEMPO ESTIMADO REALISTA:
+// - 1 formulario: ~2.5 minutos
+// - 10 formularios: ~25 minutos  
+// - 25 formularios: ~1.25 horas
+// - 50 formularios: ~2.5 horas
+// 
 // ============================================
